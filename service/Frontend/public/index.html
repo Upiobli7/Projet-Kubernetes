@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Site - Commande de Laptop</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Lien vers le fichier CSS -->
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Bienvenue sur notre site de commandes de Laptop</h1>
+            <p>Choisissez votre laptop parmi nos meilleures offres.</p>
+        </header>
+        
+        <!-- Lien pour afficher les produits -->
+        <button class="btn" onclick="showProducts()">Afficher les Produits</button>
+        
+        <!-- Conteneur pour afficher les produits -->
+        <div id="productList" class="product-list"></div>
+
+        <button id="placeOrderButton">Passer une commande</button>
+        <div id="orderList"></div>
+
+    </div>
+
+    <script>
+        function showProducts() {
+            fetch('http://localhost:3001/products')
+                .then(response => response.json())
+                .then(products => {
+                    const productListDiv = document.getElementById('productList');
+                    productListDiv.innerHTML = '';
+                    
+                    products.forEach(product => {
+                        const productItem = document.createElement('div');
+                        productItem.classList.add('product-item');
+                        productItem.innerHTML = `
+                            <h3 class="product-name">${product.name}</h3>
+                            <p class="product-price">Prix: ${product.price}€</p>
+                        `;
+                        productListDiv.appendChild(productItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des produits:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>
